@@ -1,0 +1,189 @@
+[
+  {
+    "id": "cosmetic-volatile-copy",
+    "scenario": "An experimental product card changes its call-to-action from Buy now to Reserve. The text is not a legal disclosure, localization key, accessible name, analytics contract, or supported selector, and the experiment is expected to change again.",
+    "mode": "full",
+    "risk": "low",
+    "highRisk": false,
+    "expectedRung": 1,
+    "expectedValue": "No permanent test",
+    "expectedAction": "verify only",
+    "reason": "Experimental wording has no accessibility, legal, localization, analytics, or compatibility contract."
+  },
+  {
+    "id": "refactor-covered-formatter",
+    "scenario": "A price formatter is refactored internally without changing public output. Existing parameterized tests already cover every supported currency, rounding rule, and negative value through the public formatter.",
+    "mode": "full",
+    "risk": "medium",
+    "highRisk": false,
+    "expectedRung": 2,
+    "expectedValue": "No permanent test",
+    "expectedAction": "run existing coverage",
+    "reason": "Public output and edge cases are already covered."
+  },
+  {
+    "id": "authorization-new-role",
+    "scenario": "A new support role may view an account but may not edit it. The existing policy test expresses the complete role matrix at the authorization boundary and can accept one additional row.",
+    "mode": "full",
+    "risk": "high",
+    "highRisk": true,
+    "expectedRung": 3,
+    "expectedValue": "Extend existing",
+    "expectedAction": "extend policy matrix",
+    "reason": "A stable access rule has serious consequence and fits an existing boundary test."
+  },
+  {
+    "id": "expired-signed-token",
+    "scenario": "An API must reject expired signed upload tokens. A browser journey could show this, but an existing HTTP integration test uses the real signing library and observes the same protocol failure.",
+    "mode": "full",
+    "risk": "high",
+    "highRisk": true,
+    "expectedRung": 3,
+    "expectedValue": "Extend existing",
+    "expectedAction": "extend API integration coverage",
+    "reason": "The HTTP test is cheaper than a browser test and preserves signing and protocol fidelity."
+  },
+  {
+    "id": "payment-idempotency-gap",
+    "scenario": "Retrying a payment callback can create a second charge. No existing coverage exercises callback idempotency, the key is a stable public contract, and a real database transaction is needed to expose the failure.",
+    "mode": "full",
+    "risk": "high",
+    "highRisk": true,
+    "expectedRung": 5,
+    "expectedValue": "New regression test",
+    "expectedAction": "add one database integration test",
+    "reason": "Duplicate charges are consequential and no existing faithful test exercises retries."
+  },
+  {
+    "id": "accessibility-name",
+    "scenario": "Visible form text is changing and that text is also the input's accessible name. The accessibility suite already checks nearby form semantics but not this field.",
+    "mode": "full",
+    "risk": "high",
+    "highRisk": true,
+    "expectedRung": 3,
+    "expectedValue": "Extend existing",
+    "expectedAction": "extend accessibility coverage",
+    "reason": "Apparently cosmetic text is an observable accessibility contract."
+  },
+  {
+    "id": "coverage-only-getter",
+    "scenario": "A one-line getter has no permanent test and a coverage report marks the line red. No credible wrong behavior, consumer consequence, or special contract can be named.",
+    "mode": "lite",
+    "risk": "low",
+    "highRisk": false,
+    "expectedRung": 1,
+    "expectedValue": "No permanent test",
+    "expectedAction": "verify only",
+    "reason": "Coverage is not a defect or consequence, even in rigorous mode."
+  },
+  {
+    "id": "source-shape-snapshot",
+    "scenario": "A snapshot asserts exact internal markup and fails on harmless formatter changes. Rendered behavior, accessibility semantics, and supported selectors are unchanged.",
+    "mode": "lite",
+    "risk": "low",
+    "highRisk": false,
+    "expectedRung": 1,
+    "expectedValue": "No permanent test",
+    "expectedAction": "verify rendered behavior",
+    "reason": "Exact internal markup is not a documented contract."
+  },
+  {
+    "id": "flaky-money-test",
+    "scenario": "A nondeterministic test protects a financial rounding invariant that has caused a real customer-visible defect. No other test covers the invariant.",
+    "mode": "ultra",
+    "risk": "high",
+    "highRisk": true,
+    "expectedRung": 2,
+    "expectedValue": "Revise",
+    "expectedAction": "repair deterministic protection",
+    "reason": "Canary mode does not remove valuable financial protection because it is flaky."
+  },
+  {
+    "id": "duplicate-same-boundary",
+    "scenario": "Two integration tests exercise the same payment input, database boundary, observable result, and duplicate-charge consequence. Their only difference is duplicated fixture setup.",
+    "mode": "ultra",
+    "risk": "high",
+    "highRisk": true,
+    "expectedRung": 2,
+    "expectedValue": "Consolidate",
+    "expectedAction": "name and retain one survivor",
+    "reason": "High impact justifies protection, not duplicate checks of the same failure."
+  },
+  {
+    "id": "distinct-auth-layers",
+    "scenario": "A policy unit test proves an authorization rule while a route-level integration test proves the middleware is wired. Either the rule or the wiring can fail independently and expose private records.",
+    "mode": "ultra",
+    "risk": "high",
+    "highRisk": true,
+    "expectedRung": 2,
+    "expectedValue": "Keep",
+    "expectedAction": "preserve policy and route tests",
+    "reason": "The tests catch distinct rule and wiring failures."
+  },
+  {
+    "id": "provisional-helper",
+    "scenario": "A new internal helper is being explored in a greenfield feature. Its interface is expected to change, no external behavior depends on it yet, and the feature is verified manually in a disposable prototype.",
+    "mode": "ultra",
+    "risk": "low",
+    "highRisk": false,
+    "expectedRung": 1,
+    "expectedValue": "No permanent test",
+    "expectedAction": "disposable verification",
+    "reason": "A volatile internal boundary has no durable external consequence."
+  },
+  {
+    "id": "partner-import-lite",
+    "scenario": "A planned import validator rejects malformed partner records. The schema is documented and malformed data could block an operations queue, but it is not yet known whether the integration will enter production. No nearby test covers the rule.",
+    "mode": "lite",
+    "risk": "medium",
+    "highRisk": false,
+    "expectedRung": 5,
+    "expectedValue": "New regression test",
+    "expectedAction": "add one schema contract test",
+    "reason": "Concrete operational consequence and stable schema permit reasonable likelihood inference."
+  },
+  {
+    "id": "partner-import-full",
+    "scenario": "A planned import validator rejects malformed partner records. The schema is documented and malformed data could block an operations queue, but it is not yet known whether the integration will enter production. No nearby test covers the rule.",
+    "mode": "full",
+    "risk": "medium",
+    "highRisk": false,
+    "expectedRung": 0,
+    "expectedValue": "Ask or preserve",
+    "expectedAction": "ask whether production exposure is real; preserve a provisional sentinel if unresolved",
+    "reason": "Balanced mode must not convert plausible operational impact and missing exposure evidence into silent suppression."
+  },
+  {
+    "id": "partner-import-ultra",
+    "scenario": "A planned import validator rejects malformed partner records. The schema is documented and malformed data could block an operations queue, but it is not yet known whether the integration will enter production. No nearby test covers the rule.",
+    "mode": "ultra",
+    "risk": "medium",
+    "highRisk": false,
+    "expectedRung": 0,
+    "expectedValue": "Ask or preserve",
+    "expectedAction": "ask whether production exposure is real; preserve a provisional sentinel if unresolved",
+    "reason": "Canary mode requires strong evidence, but material unknown exposure must be resolved rather than silently suppressed."
+  },
+  {
+    "id": "stable-report-filter-full",
+    "scenario": "A stable report filter is used weekly in production. An incorrect sort forces ten minutes of manual resorting and briefly delays an internal workflow, but staff catch it before data loss, security issues, or customer harm. No nearby test covers the documented behavior, and a test would be cheap.",
+    "mode": "full",
+    "risk": "medium",
+    "highRisk": false,
+    "expectedRung": 5,
+    "expectedValue": "New regression test",
+    "expectedAction": "add one behavioral filter example",
+    "reason": "Balanced mode has a durable contract, real exposure, and repeated manual cost that can repay one cheap test."
+  },
+  {
+    "id": "stable-report-filter-ultra",
+    "scenario": "A stable report filter is used weekly in production. An incorrect sort forces ten minutes of manual resorting and briefly delays an internal workflow, but staff catch it before data loss, security issues, or customer harm. No nearby test covers the documented behavior, and a test would be cheap.",
+    "mode": "ultra",
+    "risk": "medium",
+    "highRisk": false,
+    "expectedRung": 1,
+    "expectedValue": "No permanent test",
+    "expectedAction": "verify only",
+    "reason": "Canary mode requires a serious consequence and this recoverable inconvenience does not qualify."
+  }
+]

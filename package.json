@@ -1,0 +1,20 @@
+{
+  "name": "mullet-agent-skill",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Verify every change. Keep only tests that repay their maintenance.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ziptied/mullet.git"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node scripts/validate-package.mjs && node benchmarks/check-decision-fixtures.mjs",
+    "check:decisions": "node benchmarks/check-decision-fixtures.mjs",
+    "eval:decisions": "node benchmarks/run-decisions.mjs",
+    "eval:triggers": "node benchmarks/run-triggers.mjs"
+  }
+}

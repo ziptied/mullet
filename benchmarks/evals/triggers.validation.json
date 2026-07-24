@@ -1,0 +1,72 @@
+[
+  {
+    "id": "train-positive-python-bug",
+    "expectActivation": true,
+    "kind": "implicit",
+    "language": "Python",
+    "prompt": "Fix the retry worker so the same invoice event cannot be applied twice after a timeout. Check nearby coverage and make the change safely."
+  },
+  {
+    "id": "validation-positive-go-bug",
+    "expectActivation": true,
+    "kind": "implicit",
+    "language": "Go",
+    "prompt": "A cancelled request can leave inventory reserved. Fix the rollback path and make sure this failure does not quietly return."
+  },
+  {
+    "id": "validation-positive-rust-refactor",
+    "expectActivation": true,
+    "kind": "implicit",
+    "language": "Rust",
+    "prompt": "Replace the parser's internal state machine with an iterator while preserving its documented accepted inputs."
+  },
+  {
+    "id": "train-positive-go-tdd",
+    "expectActivation": true,
+    "kind": "explicit",
+    "language": "Go",
+    "prompt": "Use TDD to add an endpoint that rejects expired upload tokens. Keep the resulting test suite maintainable."
+  },
+  {
+    "id": "validation-positive-php-audit",
+    "expectActivation": true,
+    "kind": "explicit",
+    "language": "PHP",
+    "prompt": "Review this test directory for duplication, brittle source coupling, and high-value gaps. Recommend changes but do not delete anything."
+  },
+  {
+    "id": "train-negative-math",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "A class has 30 students and 24 passed the test. What percentage passed?"
+  },
+  {
+    "id": "validation-negative-reading-list",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Create a reading list about the history of software testing. Include books and papers only."
+  },
+  {
+    "id": "train-negative-interview",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Give me five interview questions about software quality culture. Do not modify any code."
+  },
+  {
+    "id": "validation-negative-statistics",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Explain when a two-sided statistical test is more appropriate than a one-sided test."
+  },
+  {
+    "id": "validation-negative-retrospective",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Turn these notes into a retrospective summary: deployment was smooth, QA started late, and requirements changed twice."
+  }
+]

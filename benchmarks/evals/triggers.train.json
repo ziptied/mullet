@@ -1,0 +1,100 @@
+[
+  {
+    "id": "validation-positive-python-feature",
+    "expectActivation": true,
+    "kind": "implicit",
+    "language": "Python",
+    "prompt": "Add CSV export for settled payouts. Amounts and currency codes must match the ledger. Implement it with appropriate verification."
+  },
+  {
+    "id": "train-positive-js-feature",
+    "expectActivation": true,
+    "kind": "implicit",
+    "language": "JavaScript",
+    "prompt": "Add a coupon field to checkout. A valid coupon changes the payable total and an invalid one shows an error. Implement it and leave the project in a trustworthy state."
+  },
+  {
+    "id": "train-positive-php-refactor",
+    "expectActivation": true,
+    "kind": "implicit",
+    "language": "PHP",
+    "prompt": "Extract the permission calculation from this controller into the policy class without changing behavior. Verify the refactor."
+  },
+  {
+    "id": "train-positive-rust-snapshot",
+    "expectActivation": true,
+    "kind": "explicit",
+    "language": "Rust",
+    "prompt": "This snapshot test changes on every harmless formatter update. Repair the test so it protects behavior instead of implementation noise."
+  },
+  {
+    "id": "validation-positive-java-flaky",
+    "expectActivation": true,
+    "kind": "explicit",
+    "language": "Java",
+    "prompt": "Diagnose and fix the flaky test around asynchronous email delivery. Do not remove meaningful protection."
+  },
+  {
+    "id": "train-positive-java-fixture",
+    "expectActivation": true,
+    "kind": "explicit",
+    "language": "Java",
+    "prompt": "The integration-test fixture has become slow and duplicated. Simplify it while preserving protection for database migration failures."
+  },
+  {
+    "id": "train-positive-js-ci",
+    "expectActivation": true,
+    "kind": "explicit",
+    "language": "JavaScript",
+    "prompt": "Update CI so the browser tests cannot report success when every discovered case is skipped."
+  },
+  {
+    "id": "train-negative-testing-definition",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Explain the difference between unit, integration, and end-to-end testing to a new engineering manager."
+  },
+  {
+    "id": "train-negative-translate",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Translate the phrase 'test-driven development' into Japanese and explain the literal wording."
+  },
+  {
+    "id": "validation-negative-terminology",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "What does the phrase 'test oracle' mean in software engineering literature?"
+  },
+  {
+    "id": "validation-negative-email",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Draft an email telling the team that tomorrow's fire-alarm test begins at 9 AM."
+  },
+  {
+    "id": "train-negative-book-summary",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Summarize the main historical influence of xUnit frameworks in two paragraphs."
+  },
+  {
+    "id": "train-negative-product-copy",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Write homepage copy for a product called Test Kitchen that helps chefs organize recipes."
+  },
+  {
+    "id": "train-negative-release-summary",
+    "expectActivation": false,
+    "kind": "negative",
+    "language": "General",
+    "prompt": "Rewrite this release note clearly: the team tested payments and found no customer-visible changes."
+  }
+]
