@@ -289,6 +289,29 @@ sentinels; its deterministic policy check is part of `npm test`. Read the
 the historical
 [v0.1 evaluation](benchmarks/results/2026-07-25-package-evaluation.md).
 
+## Pest 5 provider awareness
+
+When Mullet sees Pest 5 in a PHP repository, it treats Pest as a verification
+provider, not a different policy. It inspects Composer metadata and local Pest
+commands to find available capabilities, then still applies the same ladder.
+
+- [Pest Agent](https://pestphp.com/docs/agent) is preferred for disposable
+  one-off proof when installed, including backend, browser, database, mail,
+  queue, notification, and side-effect checks.
+- [Pest Evals](https://pestphp.com/docs/evals) are preferred for AI output,
+  prompt behavior, semantic quality, tool calls, safety, factuality, and agent
+  trajectory checks.
+- Eval files are durable tests. Mullet keeps them only when normal
+  permanent-value gates pass.
+- Provider-specific durable tests are rejected when an application abstraction
+  already protects the same behavior.
+
+The v1 provider surface follows the Pest 5 release notes and upgrade guidance:
+[Pest 5](https://pestphp.com/docs/pest5-now-available) and
+[Upgrade Guide](https://pestphp.com/docs/upgrade-guide). PHPStan, Rector, TIA,
+and sharding may be useful Pest tooling, but they are not Mullet verification
+providers in this integration.
+
 ## License
 
 [MIT](LICENSE)

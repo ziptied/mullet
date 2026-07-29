@@ -105,11 +105,17 @@ for (const fixture of fixtures) {
         observed = null;
       }
       const completed = result.status === 0 && !result.error;
+      const providerText = `${observed?.verification ?? ""} ${observed?.action ?? ""}`;
+      const providerTerms = fixture.expectedProviderTerms ?? [];
+      const providerCorrect = providerTerms.every((term) => (
+        providerText.toLowerCase().includes(term.toLowerCase())
+      ));
       const correct = (
         completed
         && observed?.intensity === fixture.mode
         && observed?.rung === fixture.expectedRung
         && observed?.value === fixture.expectedValue
+        && providerCorrect
       );
       records.push({
         id: fixture.id,
@@ -121,6 +127,8 @@ for (const fixture of fixtures) {
         },
         observed,
         completed,
+        providerTerms,
+        providerCorrect,
         correct,
         exitCode: result.status,
         timedOut: result.error?.code === "ETIMEDOUT",
@@ -132,7 +140,7 @@ for (const fixture of fixtures) {
       console.log(
         `${fixture.id} #${run}: expected=${fixture.expectedValue}/rung`
         + `${fixture.expectedRung} observed=${observed?.value ?? "none"}/rung`
-        + `${observed?.rung ?? "none"} correct=${correct}`,
+        + `${observed?.rung ?? "none"} provider=${providerCorrect} correct=${correct}`,
       );
     } finally {
       await rm(workspace, { recursive: true, force: true });

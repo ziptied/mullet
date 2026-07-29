@@ -21,11 +21,14 @@ invariants. `npm run eval:decisions -- --model gpt-5.4` then loads Mullet in
 isolated Codex tasks, requests structured verdicts, and compares observed
 decisions with those expectations. Use `--limit` or `--ids` for diagnostics.
 Verdicts and final rungs are strict. Rung 4 selects the cheapest faithful scope;
-a newly created test must finish at rung 5.
+a newly created test must finish at rung 5. Some fixtures also require provider
+routing terms, such as Agent or Eval, to appear in the recommended verification
+or action.
 
 Fixtures include financial, authorization, accessibility, cosmetic, refactor,
 duplicate, flaky, integration, greenfield, external-index, compatibility, and
-existing-test deletion cases. They distinguish domain adjacency from
+existing-test deletion cases, plus Pest 5 provider-routing cases. They
+distinguish domain adjacency from
 demonstrated consequence, exposure, and unique protection. Suppressing a
 demonstrated serious gap or preserving a no-consequence fixture is a hard
 failure.

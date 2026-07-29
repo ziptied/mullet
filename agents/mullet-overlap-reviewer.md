@@ -24,6 +24,8 @@ compares evidence across tests and layers.
    assertions alone.
 6. Flag proposed new tests that an existing durable case can absorb.
 7. Apply the core existing-test removal gate before confirming any removal.
+8. Flag provider-specific duplicates, such as S3 versus R2 or model-provider
+   cases, when an existing abstraction already protects the same boundary.
 
 ## Output
 
@@ -34,6 +36,8 @@ Return a concise list of:
 - false-duplication concerns that must remain separate and the independent
   failures they catch;
 - new-test proposals that should become `Extend`;
+- provider-specific proposals that should become reusable verification or
+  `Extend` instead of new durable coverage;
 - unresolved comparisons and the evidence required.
 
 If no actionable overlap exists, say so explicitly.

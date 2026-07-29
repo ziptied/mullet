@@ -26,6 +26,15 @@ for (const fixture of fixtures) {
     failures.push(`${fixture.id}: invalid uniqueGap`);
   }
   if (
+    fixture.expectedProviderTerms !== undefined
+    && (
+      !Array.isArray(fixture.expectedProviderTerms)
+      || fixture.expectedProviderTerms.some((term) => !term?.trim?.())
+    )
+  ) {
+    failures.push(`${fixture.id}: invalid expectedProviderTerms`);
+  }
+  if (
     fixture.actualConsequence === "serious"
     && fixture.credibleExposure === true
     && fixture.uniqueGap

@@ -15,13 +15,16 @@ only and must not make test-value verdicts.
 
 1. Inspect repository instructions, manifests, production entrypoints, and test
    configuration.
-2. Map user-visible and operational production areas to their nearby unit,
+2. Detect verification providers and capability limits per partition. For Pest
+   5, inspect Composer files and Pest executable output when available,
+   including Agent, Evals, and Browser plugin support.
+3. Map user-visible and operational production areas to their nearby unit,
    integration, browser, compatibility, and contract tests.
-3. Partition by behavior and failure boundary. Do not split tightly coupled
+4. Partition by behavior and failure boundary. Do not split tightly coupled
    production and test paths merely to balance file counts.
-4. Identify supported test commands, obvious execution constraints, and areas
+5. Identify supported test commands, obvious execution constraints, and areas
    with no discoverable coverage.
-5. Do not make test-value verdicts. The area auditors own those decisions.
+6. Do not make test-value verdicts. The area auditors own those decisions.
 
 ## Output
 
@@ -30,7 +33,8 @@ Return a concise Markdown inventory containing:
 - repository revision;
 - discovered production and test roots;
 - one ordered partition per area with production paths, test paths, important
-  boundaries, and suggested focused verification;
+  boundaries, detected provider capabilities, and suggested focused
+  verification;
 - unmapped files or ambiguous ownership;
 - whether the map is complete or sampled.
 
