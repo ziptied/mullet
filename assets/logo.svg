@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">Mullet</title>
+  <desc id="desc">A terminal-style M icon for the Mullet Cursor plugin.</desc>
+  <rect width="256" height="256" rx="40" fill="#f7f2e8"/>
+  <rect x="22" y="22" width="212" height="212" rx="28" fill="#111111"/>
+  <circle cx="58" cy="54" r="10" fill="#ff6b57"/>
+  <circle cx="88" cy="54" r="10" fill="#f5c542"/>
+  <circle cx="118" cy="54" r="10" fill="#3ebd6b"/>
+  <path d="M54 190V86h31l43 61 43-61h31v104h-30v-57l-33 47h-22l-33-47v57H54Z" fill="#f7f2e8"/>
+  <rect x="202" y="158" width="14" height="42" fill="#f5c542"/>
+</svg>

@@ -39,6 +39,7 @@ const values = [
   "Revise",
   "Consolidate",
   "Keep",
+  "Candidate for removal",
   "Ask or preserve",
 ];
 const records = [];
@@ -140,9 +141,16 @@ for (const fixture of fixtures) {
 }
 
 const correctCount = records.filter((item) => item.correct).length;
-const highRiskErrors = records.filter((item) => {
+const suppressingValues = new Set(["No permanent test", "Candidate for removal"]);
+const seriousProtectionErrors = records.filter((item) => {
   const fixture = fixtures.find((candidate) => candidate.id === item.id);
-  return fixture?.highRisk && !item.correct;
+  return (
+    fixture?.actualConsequence === "serious"
+    && fixture?.credibleExposure === true
+    && fixture?.uniqueGap
+    && item.completed
+    && (item.observed?.rung === 1 || suppressingValues.has(item.observed?.value))
+  );
 }).length;
 const versionResult = spawnSync(codexBin, ["--version"], { encoding: "utf8" });
 const summary = {
@@ -155,7 +163,7 @@ const summary = {
   fixtures: fixtures.length,
   correct: correctCount,
   accuracy: records.length ? correctCount / records.length : null,
-  highRiskErrors,
+  seriousProtectionErrors,
 };
 
 await mkdir(resolve(root, "benchmarks/runs"), { recursive: true });
@@ -165,4 +173,4 @@ await writeFile(
 );
 console.log(JSON.stringify(summary, null, 2));
 
-if (correctCount !== records.length || highRiskErrors) process.exit(1);
+if (correctCount !== records.length || seriousProtectionErrors) process.exit(1);
