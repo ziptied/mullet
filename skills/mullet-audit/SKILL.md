@@ -9,6 +9,8 @@ disable-model-invocation: true
 Audit application behavior and regression protection without editing the
 repository. Read and apply the core [Mullet policy](../mullet/SKILL.md) and its
 [foundations](../mullet/references/foundations.md) before dispatching work.
+When Pest 5 is detected, also apply the
+[Pest 5 provider reference](../mullet/references/pest5-provider.md).
 The core Mullet skill is the canonical decision policy; this skill and the
 Cursor agents only orchestrate read-only mapping, overlap review, and challenge
 passes.
@@ -52,18 +54,19 @@ This workflow is report-only.
 2. Launch `mullet-overlap-reviewer` over the area findings and nearby coverage.
 3. Launch `mullet-verdict-challenger` over every actionable or unresolved
    verdict.
-4. Synthesize only findings that survive the challenge.
+4. Synthesize only findings that survive the challenge, including provider
+   capability limits that materially affected verification.
 
 ### Whole-application audit
 
 1. Launch `mullet-scope-mapper` to inventory production areas, tests, and
-   meaningful boundaries.
+   meaningful boundaries, including Pest 5 or other provider capabilities.
 2. Partition by production behavior, not arbitrary file counts. Keep coupled
    production and test paths together.
 3. Launch one `mullet-area-auditor` per partition, with at most four running at
    once.
 4. After all area handoffs arrive, launch one `mullet-overlap-reviewer` across
-   the combined findings.
+   the combined findings and provider-specific duplication concerns.
 5. Launch one `mullet-verdict-challenger` over actionable and unresolved
    verdicts.
 6. Mark the audit complete only when every mapped partition finished.

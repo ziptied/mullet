@@ -102,6 +102,28 @@ fixture names differ.
 **Why:** Serious consequence justifies one durable protection, not repeated
 checks of the same failure boundary.
 
+## Pest 5 provider routing
+
+**UI copy:** If Pest 5 Agent and Browser are installed, a volatile “Save” to
+“Save Changes” update can be verified with `./vendor/bin/pest --agent='...'`.
+Leave no durable test when the text is not an accessibility, legal,
+localization, analytics, or selector contract.
+
+**AI prompt:** If Pest Evals are installed, route prompt tone, relevance,
+semantic quality, tool-call, safety, factuality, or trajectory checks to an
+eval. Keep an eval file only when the ordinary permanent-value gates pass;
+otherwise run it as disposable verification.
+
+**Serious permission gap:** Pest Agent may prove a new authorization rule now,
+but it does not replace durable protection when exporting private data is a
+stable, exposed, otherwise-uncovered failure. Add the smallest faithful Pest
+test after using Agent for proof.
+
+**Provider-specific infrastructure:** Moving from S3 to R2 behind the same
+storage abstraction does not need a new R2-named durable test when existing
+abstraction coverage already proves uploads, downloads, and signed URLs. Run
+the surviving coverage or a temporary probe and add nothing.
+
 ## How modes differ on an uncertain but concrete risk
 
 **Change:** A planned import validator rejects malformed partner records. The

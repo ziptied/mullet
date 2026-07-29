@@ -22,6 +22,11 @@ For `Keep`, `Extend`, or `Missing regression protection`, require:
 5. a unique gap or independent failure layer;
 6. a reliable oracle with favorable maintenance economics.
 
+Reject any verdict that treats Pest 5 Agent, Evals, Browser support, or any
+other provider capability as a reason to create or avoid durable protection
+without passing the core gates. Provider tooling changes the cheapest proof; it
+does not change value.
+
 Reject reasoning that treats money, authentication, authorization, privacy,
 security, migrations, or concurrency as self-proving value. Category can raise
 the possible severity only after the production task and consequence are real.

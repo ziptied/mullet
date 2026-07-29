@@ -18,7 +18,8 @@ evidence for that policy.
    failures, and concrete consequences.
 3. Inspect nearby tests and equivalent failure modes before finding a gap.
 4. Use focused non-mutating verification when it materially clarifies the
-   oracle, boundary, or overlap.
+   oracle, boundary, or overlap. When Pest 5 Agent or Evals are detected, prefer
+   those provider routes for disposable proof where they fit the behavior.
 5. Apply the requested Mullet intensity and existing-test removal gate.
 
 Financial, authentication, authorization, privacy, security, migration, and
@@ -49,7 +50,8 @@ smelly; report `Revise` inside the recommended action when repair is warranted.
 Return:
 
 - assigned scope and completeness;
-- verification performed;
+- verification performed, provider capabilities used, and limitations such as
+  missing Pest plugins, skipped evals, API keys, or browser setup;
 - verdict counts;
 - one structured row per actionable or pending finding containing production
   task, actor, failure, consequence, exposure evidence, durable boundary,

@@ -45,14 +45,28 @@ For whole-suite audits, ambiguous high-impact decisions, or requested rationale,
 
 ## Separate proof from protection
 
-Make two decisions:
+Make two decisions: **Verification**, the cheapest reliable proof the change
+works now; and **Regression**, what permanent test, if any, will repay its
+future cost.
 
-1. **Verification:** What is the cheapest reliable proof the change works now?
-2. **Regression:** What permanent test, if any, will repay its future cost?
+Use a focused command, build, smoke check, exploratory exercise, or disposable assertion for verification; do not leave verification-only scaffolding in the suite.
+A TDD check must still earn graduation into permanent coverage.
 
-Use a focused command, build, smoke check, exploratory exercise, or disposable
-assertion for verification. Do not leave verification-only scaffolding in the
-suite. A TDD check must still earn graduation into permanent coverage.
+## Verification providers
+
+When a repository exposes richer verification tooling, treat it as provider
+capability, not policy. Inspect manifests, lockfiles, config, and executable
+output before recommending commands. For Pest 5, read
+[references/pest5-provider.md](references/pest5-provider.md) when
+`pestphp/pest` 5.x or `./vendor/bin/pest` is present.
+
+Provider routing cannot bypass the ladder; name any chosen provider in
+`Verification`. Prefer existing coverage, disposable proof, and extension
+before new durable tests. Use Pest Agent for temporary probes and Pest Evals for
+AI output, prompts, semantic quality, tool calls, and trajectories. Keep eval
+files only when normal permanent-value gates pass. Never create
+provider-specific durable tests when an abstraction already protects behavior or
+let temporary provider success replace needed serious-risk protection.
 
 ## Creation gates
 
@@ -108,13 +122,10 @@ the defect possible.
 ## Greenfield graduation
 
 Treat new internal boundaries as provisional. Do not freeze an interface merely
-because it exists today. After the creation gates pass, a check graduates into
-permanent coverage when it protects at least one of:
-
-- a stable externally meaningful contract;
-- a serious reachable invariant;
-- a consequential escaped or demonstrably recurring defect;
-- repeatedly expensive manual verification.
+because it exists today. After the creation gates pass, a check graduates when
+it protects a stable external contract, serious reachable invariant,
+consequential escaped or recurring defect, or repeatedly expensive manual
+verification.
 
 Large changes require broader verification, not automatic permanent tests.
 Prefer one stable outcome over tests for every implementation step. Add no
@@ -154,27 +165,18 @@ deletion when the invariant is unclear.
 
 ## Investigate serious domains
 
-Inspect deeply when behavior involves:
+Inspect deeply when behavior involves money, financial calculations, security,
+authentication, authorization, privacy, consent, data integrity, migrations,
+irreversible state, negative database oracles, concurrency, retries,
+idempotency, inventory, destructive commands, public APIs, integrations,
+external indexes, compatibility, route registration, package upgrades, config
+coercion, incidents, and broad business rules.
 
-- money and financial calculations;
-- security, authentication, authorization, privacy, and consent;
-- data integrity, migrations, irreversible state, and negative database oracles;
-- concurrency, retries, idempotency, inventory, and destructive commands;
-- public APIs, integrations, external indexes, compatibility, and route
-  registration;
-- package upgrades, config coercion, production incidents, and broad business
-  rules.
-
-These categories raise possible severity; they do not prove a real task,
-consequence, exposure, durable contract, unique gap, or valuable oracle. A
-financially named helper, auth-adjacent framework default, unreachable path, or
-speculative rule may have no durable test value.
-
-Before `Keep`, `Extend`, or `New regression test`, establish the reachable
-production task, affected actor, concrete harm, credible exposure, durable
-boundary, and unique protection. Still search for overlap. Serious consequence
-justifies protection, not duplication. Consolidate tests with the same failure
-boundary and consequence and name the survivor. Preserve distinct layers only
+These categories raise possible severity; they do not prove task, consequence,
+exposure, durable contract, unique gap, or valuable oracle. Before `Keep`,
+`Extend`, or `New regression test`, establish reachability, actor, harm,
+exposure, boundary, and unique protection. Search for overlap: serious
+consequence justifies protection, not duplication. Preserve distinct layers only
 when they catch independently shippable failures.
 
 ## Existing removal gate
@@ -210,9 +212,8 @@ During reviews and audits, never delete automatically. A removal candidate must
 pass the existing removal gate. Under uncertainty, keep it until evidence exists
 or report `Pending`.
 
-For every existing test challenged or retained, reapply the reality, contract,
-gap, oracle, and economics gates. Existing protection does not earn permanence
-from age or domain category.
+For every existing test challenged or retained, reapply the gates. Existing
+protection does not earn permanence from age or domain category.
 
 ## Output
 
