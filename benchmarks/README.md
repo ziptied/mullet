@@ -6,8 +6,10 @@ Mullet uses three complementary evaluations.
 
 `npm test` checks that:
 
-- exactly one valid skill is distributed;
-- its runtime prompt remains between 150 and 250 lines;
+- exactly two valid skills are distributed;
+- the core runtime prompt remains between 150 and 250 lines;
+- the Cursor plugin manifest and read-only audit agents are discoverable;
+- the Cursor audit skill and agents declare the base skill as canonical policy;
 - referenced files and installation examples resolve;
 - benchmark fixtures are internally consistent;
 - private source identifiers and stray operating-system files are absent.
@@ -22,8 +24,11 @@ Verdicts and final rungs are strict. Rung 4 selects the cheapest faithful scope;
 a newly created test must finish at rung 5.
 
 Fixtures include financial, authorization, accessibility, cosmetic, refactor,
-duplicate, flaky, integration, and greenfield cases. High-risk suppression is a
-hard failure.
+duplicate, flaky, integration, greenfield, external-index, compatibility, and
+existing-test deletion cases. They distinguish domain adjacency from
+demonstrated consequence, exposure, and unique protection. Suppressing a
+demonstrated serious gap or preserving a no-consequence fixture is a hard
+failure.
 
 ## 3. Automatic-trigger benchmark
 
@@ -60,7 +65,9 @@ Success thresholds:
 - implicit feature, bug-fix, and refactor prompts: at least 80%;
 - validation set overall: at least 90%;
 - negative-prompt false activation: at most 10%;
-- no high-risk false suppression in decision fixtures.
+- no false suppression of demonstrated serious protection;
+- no protection admitted solely from financial, auth, security, or similar
+  domain adjacency.
 
 Tune only against the training split, for no more than five description
 revisions. Record the date, model, Codex version, and installation method. If the
@@ -79,9 +86,11 @@ A future greenfield A/B study should measure:
 - escaped consequential defects;
 - test-only churn after product changes;
 - runtime and maintenance burden;
-- false suppression of high-risk protection.
+- false suppression of demonstrated serious protection;
+- false preservation of high-risk-adjacent tests with no real production
+  consequence or unique gap.
 
 Directional targets are 40% fewer permanent tests for low-risk volatile work,
-30% less test-only churn, zero missed seeded high-risk defects, and zero
-high-risk false suppression. These are preregistered targets, not current
-results.
+30% less test-only churn, zero missed seeded serious defects, zero false
+suppression of demonstrated serious protection, and zero protection accepted
+from domain labels alone. These are preregistered targets, not current results.

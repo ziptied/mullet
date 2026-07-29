@@ -1,0 +1,29 @@
+{
+  "name": "mullet",
+  "displayName": "Mullet",
+  "version": "0.2.0",
+  "description": "Create tests that repay their maintenance. Verify every change, then keep lasting regression coverage only when it protects a real, durable risk.",
+  "author": {
+    "name": "ziptied"
+  },
+  "homepage": "https://mulletest.dev",
+  "repository": "https://github.com/ziptied/mullet",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "keywords": [
+    "testing",
+    "qa",
+    "test-audit",
+    "regression",
+    "automation"
+  ],
+  "category": "developer-tools",
+  "tags": [
+    "testing",
+    "quality",
+    "agents",
+    "automation"
+  ],
+  "skills": "./skills/",
+  "agents": "./agents/"
+}

@@ -1,17 +1,12 @@
 ---
 name: mullet
 description: >
-  Use for any code change—feature, bug fix, refactor, or greenfield
-  implementation—when an agent may verify behavior or create, modify, delete,
-  or recommend tests or test infrastructure, even if the user never mentions
-  testing or Mullet. Also use for TDD, code review, coverage work, flaky tests,
-  snapshots, mocks, fixtures, CI test changes, and suite audits in any language
-  or framework. Invoke before generating test code. Verify every change, but
-  keep lasting tests only for consequential durable regression risk; prefer
-  existing behavioral coverage and prevent speculative greenfield test bloat.
-  Supports lite, full, and ultra. Do not use for testing explanations with no
-  code or suite decision, non-software meanings of test, or product and
-  marketing prose.
+  Use for code changes when an agent may verify behavior or create, modify,
+  delete, or recommend tests or test infrastructure. Also use for TDD, review,
+  coverage, flaky tests, snapshots, mocks, fixtures, CI test changes, and suite
+  audits. Verify every change, but keep lasting tests only for consequential durable regression risk. Supports lite, full, and ultra. Do not use for
+  testing explanations with no code or suite decision, non-software meanings of
+  test, or product and marketing prose.
 ---
 
 # Mullet
@@ -26,27 +21,27 @@ user says `mullet lite`, `mullet full`, or `mullet ultra`.
 
 - `lite` is **rigorous**: err toward useful protection.
 - `full` is **balanced**: require evidence that risk repays cost.
-- `ultra` is **canary**: keep only the smallest sentinel for serious risk.
+- `ultra` is **canary**: keep the smallest faithful sentinel for serious risk.
 
 Intensity changes the evidence needed for a permanent test. It never weakens
-verification, repository requirements, or protection for high-risk behavior.
-Do not drift into maximizing test count, coverage, assertions, or files.
+verification, repository requirements, or protection for demonstrated serious
+behavior. Do not maximize test count, coverage, assertions, or files.
 
 ## First understand
 
 Before deciding, inspect:
 
-- the requested behavior and affected production path;
+- the requested behavior, reachable production task, and affected actor;
 - the contract or user-visible boundary;
 - nearby tests and equivalent failure modes;
-- relevant defect history when available;
+- comments, issue links, blame, commits, and defect history when challenging
+  existing tests;
 - local test rules and execution constraints.
 
-Never infer test value from change size, coverage, or a filename alone.
+Never infer test value from change size, coverage, a filename, or a financial,
+authentication, security, privacy, or other high-risk label alone.
 
-For whole-suite audits, ambiguous high-impact decisions, or requested rationale,
-read [references/foundations.md](references/foundations.md). Skip it for routine
-decisions.
+For whole-suite audits, ambiguous high-impact decisions, or requested rationale, read [references/foundations.md](references/foundations.md).
 
 ## Separate proof from protection
 
@@ -56,44 +51,42 @@ Make two decisions:
 2. **Regression:** What permanent test, if any, will repay its future cost?
 
 Use a focused command, build, smoke check, exploratory exercise, or disposable
-assertion for verification. Do not leave verification-only scaffolding, files,
-or assertions in the suite. A TDD check must still earn graduation into
-permanent coverage before handoff.
+assertion for verification. Do not leave verification-only scaffolding in the
+suite. A TDD check must still earn graduation into permanent coverage.
 
 ## Creation gates
 
 Before adding a permanent test, answer:
 
 1. **Defect:** What exact wrong behavior could ship?
-2. **Consequence:** Who or what would be harmed?
+2. **Reality:** What reachable production task, actor, and concrete consequence make the defect real?
 3. **Contract:** What observable boundary should survive implementation change?
-4. **Gap:** Why does nearby coverage not catch the same failure?
+4. **Gap:** Why does nearby coverage not catch the same failure and consequence?
 5. **Oracle:** Would this test reliably fail for the named defect?
 6. **Economics:** Do impact and likelihood justify maintenance and runtime?
 
 Permanent coverage is opt-in. Every intensity requires all six gates:
 
 - **Lite / rigorous:** permit reasonable, uncontradicted inference about
-  likelihood and durability. Add or extend one focused test when omission could
-  plausibly be costly.
+  likelihood and durability when omission could plausibly be costly.
 - **Full / balanced:** require positive evidence from a documented contract,
-  credible production exposure, history, real usage, consumers, or repeated
-  verification cost. A new feature does not need an incident before protection.
+  credible exposure, history, usage, consumers, or repeated cost.
 - **Ultra / canary:** require strong evidence of a stable contract, serious
   consequence, realistic recurrence or exposure, and a durable oracle. Prefer
   one sentinel invariant over an exhaustive case matrix. Serious means
   financial, security, data, irreversible, public-contract, or sustained
   material operational harm—not a short recoverable internal inconvenience.
 
-Otherwise return `No permanent test`, except plausible unknown high impact
-requires more inspection, a question, or preserved protection.
+Otherwise return `No permanent test`, except a credible material production path
+with missing evidence requires inspection, a question, or preserved protection.
+For existing tests, apply the removal gate below.
 
 ## The ladder
 
-Before rung 1, use **Pending** when a material consequence is plausible but the
-contract, production exposure, or nearby coverage cannot yet be established.
-Inspect, ask, or preserve provisional protection. Pending is not permission to
-create a speculative permanent suite or silently return `No permanent test`.
+Before rung 1, use **Pending** when a reachable material production path is
+credible but contract, exposure, or nearby coverage cannot be established.
+Inspect, ask, or preserve provisional protection. Domain adjacency alone is not
+Pending, and Pending is not permission to create a speculative suite.
 
 Stop at the first of rungs 1–3 that holds. If a protection gap remains, use
 rung 4 to choose scope and finish at rung 5:
@@ -119,15 +112,14 @@ because it exists today. After the creation gates pass, a check graduates into
 permanent coverage when it protects at least one of:
 
 - a stable externally meaningful contract;
-- a high-risk invariant;
+- a serious reachable invariant;
 - a consequential escaped or demonstrably recurring defect;
 - repeatedly expensive manual verification.
 
 Large changes require broader verification, not automatic permanent tests.
 Prefer one stable outcome over tests for every implementation step. Add no
-speculative fixtures, helpers, suites, snapshots, or architecture for future
-use. A stable public test may also earn permanence as executable documentation
-for consumers; implementation discovery or review evidence alone does not.
+speculative fixtures, helpers, suites, snapshots, or architecture. A stable
+public test may earn permanence as executable documentation for consumers.
 
 ## Intensity
 
@@ -139,8 +131,10 @@ for consumers; implementation discovery or review evidence alone does not.
 
 Aggression means resistance to permanent-test creation: lite is low, full is
 medium, ultra is high. No intensity may use change size alone. Under plausible
-unknown high impact, inspect further, ask, or preserve protection; never silently
-convert uncertainty into `No permanent test`.
+unknown material impact, inspect, ask, or preserve; never silently convert
+uncertainty into `No permanent test`. Ultra optimizes to the smallest faithful
+sentinel; it does not mean whole-file deletion, category-based deletion, or
+deletion when the invariant is unclear.
 
 ## Rules
 
@@ -149,7 +143,8 @@ convert uncertainty into `No permanent test`.
 - Reject tests whose only purpose is coverage.
 - Reject exact imports, calls, private methods, source strings, or incidental
   markup unless that property is the documented contract.
-- Consolidate repeated cases only when failure and consequence are the same.
+- Consolidate repeated cases only when failure and consequence are the same; in
+  mixed files, name the serious sentinel survivor instead of whole-file deletion.
 - Treat a smell as a reason to inspect or revise, not proof of no value.
 - Treat weak proof of valuable behavior as `Revise` or `Extend`.
 - Treat slow or flaky valuable tests as repair targets, not removal targets.
@@ -157,27 +152,44 @@ convert uncertainty into `No permanent test`.
 - Obey explicit repository test requirements with the smallest durable
   extension even when Mullet would otherwise stop at verification.
 
-## Protect by default
+## Investigate serious domains
 
-Do not simplify away regression protection for:
+Inspect deeply when behavior involves:
 
 - money and financial calculations;
 - security, authentication, authorization, privacy, and consent;
-- data integrity, migrations, and irreversible state;
-- concurrency, retries, idempotency, and inventory;
-- supported public APIs, integrations, and compatibility promises;
-- shared business rules with broad blast radius.
+- data integrity, migrations, irreversible state, and negative database oracles;
+- concurrency, retries, idempotency, inventory, and destructive commands;
+- public APIs, integrations, external indexes, compatibility, and route
+  registration;
+- package upgrades, config coercion, production incidents, and broad business
+  rules.
 
-Still search for overlap. High risk justifies protection, not duplication. When
-tests protect the same failure boundary and consequence, consolidate and name
-the survivor. Preserve distinct layers that catch distinct failures.
+These categories raise possible severity; they do not prove a real task,
+consequence, exposure, durable contract, unique gap, or valuable oracle. A
+financially named helper, auth-adjacent framework default, unreachable path, or
+speculative rule may have no durable test value.
+
+Before `Keep`, `Extend`, or `New regression test`, establish the reachable
+production task, affected actor, concrete harm, credible exposure, durable
+boundary, and unique protection. Still search for overlap. Serious consequence
+justifies protection, not duplication. Consolidate tests with the same failure
+boundary and consequence and name the survivor. Preserve distinct layers only
+when they catch independently shippable failures.
+
+## Existing removal gate
+
+Existing tests have a stricter deletion threshold than new tests because they may encode incident, upgrade, data, or integration history. Before removal candidacy,
+establish positive evidence that no unique durable behavior remains after inspecting production reachability, overlap, and available
+comments, issue links, blame, or commits. For credible material or serious paths
+with missing evidence, return `Pending`, `Revise`, `Consolidate`, or `Keep`.
 
 ## Challenge by default
 
 Question permanent tests for:
 
-- cosmetic formatting, exact wording, and trivial rendering;
-- source shape and internal wiring;
+- cosmetic formatting, exact wording, trivial rendering, source shape, and
+  internal wiring;
 - obvious getters, framework behavior, and one-line pass-throughs;
 - duplicate cases with the same failure and consequence;
 - speculative edge cases with no credible impact.
@@ -191,12 +203,16 @@ may still be mandatory.
 - **Generate:** `Pending — ask or preserve`, `No permanent test`,
   `Extend existing`, or `New regression test`.
 - **Review:** `Keep`, `Revise`, `Consolidate`, or `Candidate for removal`.
-- **Audit:** `Keep`, `Extend`, `Consolidate`, or `Candidate for removal`.
+- **Audit:** `Keep`, `Extend`, `Revise`, `Consolidate`, `Candidate for removal`,
+  `Missing regression protection`, or `Pending`.
 
-During reviews and audits, never delete automatically. Inspect production
-behavior and overlap before claiming duplication. A removal candidate needs
-evidence that it protects no unique durable behavior. Under uncertainty, keep it
-until evidence exists.
+During reviews and audits, never delete automatically. A removal candidate must
+pass the existing removal gate. Under uncertainty, keep it until evidence exists
+or report `Pending`.
+
+For every existing test challenged or retained, reapply the reality, contract,
+gap, oracle, and economics gates. Existing protection does not earn permanence
+from age or domain category.
 
 ## Output
 
@@ -217,15 +233,17 @@ Why: <regression, consequence, boundary, overlap, and cost>
 Action: <nothing, verify only, extend X, rewrite at Y, or removal candidate>
 ```
 
-For suites, use one row per scoped test and finish with verdict counts. State
-whether the audit is complete or sampled.
+For suites, use one row per actionable or pending finding, aggregate unchanged `Keep` results, and finish with verdict counts. State whether the audit is
+complete or sampled and name omitted scope. For removal candidates, name the
+production path, history inspected, surviving coverage, and bug made easier to
+ship.
 
 ## Final question
 
-Internally ask: “If this test disappears, what important bug becomes easier to
-ship?” Ask the user only when missing evidence blocks a high-impact decision.
+Internally ask: “If this test disappears, what important bug becomes easier to ship?” Ask the user only when missing evidence blocks a high-impact decision.
 
 If no consequential regression can be named after inspecting the contract,
 production path, history, and nearby coverage, verify the change and add no
-permanent test. If plausible high impact remains unknown, ask or preserve
-protection.
+permanent test. If a credible material production path remains unresolved, ask
+or preserve protection. Never preserve a test merely because its subject sounds
+high risk.

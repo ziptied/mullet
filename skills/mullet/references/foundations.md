@@ -42,7 +42,12 @@ changes.
 
 Mullet derives:
 
-- Protect high-impact behavior even when its implementation is small.
+- Treat financial, authentication, authorization, privacy, security, and data
+  labels as prompts to investigate, not substitutes for risk evidence.
+- Establish a reachable production task and concrete consequence before calling
+  behavior high impact.
+- Protect demonstrated high-impact behavior even when its implementation is
+  small.
 - Treat large diffs as a reason for broader verification, not automatic tests.
 - Give escaped and recurring defects more weight than imagined edge cases.
 - Reassess regression value as risks, usage, and contracts change.
@@ -143,9 +148,11 @@ unit-only.
 
 When principles pull in different directions:
 
-1. Preserve protection for plausible high impact.
+1. Resolve credible high-impact uncertainty on a reachable production path.
 2. Test the smallest stable invariant at the cheapest faithful boundary.
 3. Require a reliable oracle and unique coverage gap.
 4. Prefer revision or consolidation over deletion.
-5. Under unresolved high-impact uncertainty, ask or preserve.
+5. Under unresolved credible material uncertainty, ask or preserve.
 6. Under low-impact uncertainty, verify and add no permanent test.
+7. Under mere high-risk adjacency without a real consequence, verify and do not
+   preserve speculative protection.

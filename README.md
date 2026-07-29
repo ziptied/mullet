@@ -2,8 +2,11 @@
 
 **Verify every change. Keep only tests that repay their maintenance.**
 
+[mulletest.dev](https://mulletest.dev) · [GitHub](https://github.com/ziptied/mullet)
+
 Status: experimental preview. Decision diagnostics are promising; automatic
-invocation remains below the release threshold.
+invocation remains below the release threshold. Cursor users can explicitly
+launch read-only scoped or whole-application audits through the bundled plugin.
 
 Mullet is a tiny, framework-agnostic Agent Skill that decides whether a software
 change needs lasting regression coverage. It separates proof that a change works
@@ -51,11 +54,53 @@ Install globally for every supported agent:
 npx skills add ziptied/mullet --skill mullet -g -a '*' -y
 ```
 
+Install the explicit portable audit skill when the target supports Agent Skills
+but not Cursor plugins:
+
+```sh
+npx skills add ziptied/mullet --skill mullet-audit
+```
+
 Skill activation remains the agent's decision. Global installation plus
 Mullet's intent-rich description gives it the best portable chance of automatic
 use. The current single-run post-tuning evaluation did not meet the
 automatic-activation release threshold, so say `use mullet` when a particular
 run must use it.
+
+### Cursor plugin
+
+Mullet is also a Cursor plugin that bundles both skills and four read-only audit
+subagents. For local development, clone the repository and link it into Cursor's
+local plugin directory:
+
+```sh
+ln -s /absolute/path/to/mullet ~/.cursor/plugins/local/mullet
+```
+
+Reload Cursor, then invoke `/mullet-audit`. The plugin manifest is ready for a
+Cursor marketplace submission, but this preview is not claiming marketplace
+publication.
+
+### Cursor marketplace
+
+Marketplace listing details are prepared in
+[docs/cursor-marketplace-submission.md](docs/cursor-marketplace-submission.md).
+The public listing uses the same positioning as [mulletest.dev](https://mulletest.dev):
+“Create tests that repay their maintenance.”
+
+Release checks before submission:
+
+```sh
+npm test
+npm run check:decisions
+npm run eval:decisions -- --model gpt-5.4 --runs 1
+npm run eval:triggers -- --model gpt-5.4 --runs 3
+npm pack --dry-run
+```
+
+For public Cursor Marketplace submission, this repo is packaged as a single
+plugin with `.cursor-plugin/plugin.json` at the repository root, a committed
+`assets/logo.svg`, and no required repository-level marketplace manifest.
 
 ## Three intensities
 
@@ -78,7 +123,7 @@ tests, not the duty to find out whether the software works.
 Before admitting a permanent test, Mullet asks six questions:
 
 1. What exact defect could ship?
-2. Who or what would suffer?
+2. What reachable production task, actor, and concrete consequence make it real?
 3. What observable contract should survive implementation changes?
 4. Why will nearby coverage miss it?
 5. Will this test reliably detect that defect?
@@ -93,6 +138,13 @@ It then climbs only as far as necessary:
 5. Add one new behavioral regression test only when nothing else protects the
    consequential gap.
 
+Existing tests have a stricter removal gate than new tests have for creation.
+Before recommending `Candidate for removal`, Mullet must find positive evidence
+that no unique durable behavior remains after inspecting production reachability,
+overlap, and available comments, issue links, blame, or commits. For credible
+material or serious paths with missing evidence, it preserves or escalates
+instead of deleting.
+
 ## What passes the ladder
 
 - A new idempotency boundary can double-charge customers, no existing test
@@ -102,6 +154,9 @@ It then climbs only as far as necessary:
   policy test covers nearby roles: **extend the existing policy test**.
 - A currency conversion changes stored cents into displayed decimal values:
   **protect the financial invariant at the smallest faithful boundary**.
+- A helper named `calculateAccountRisk` belongs to an abandoned admin prototype,
+  has no reachable consumer, and duplicates no production contract:
+  **verify it if changed, but add no permanent test**.
 
 What does not pass:
 
@@ -112,7 +167,42 @@ What does not pass:
 - One speculative test for every branch of an interface that is still changing.
 - A duplicate test at the same failure boundary with the same consequence.
 
+Financial, authentication, authorization, security, privacy, migration, and
+concurrency terminology triggers deeper inspection. It is not evidence by
+itself. Mullet must establish a real production task, concrete consequence,
+credible exposure, durable boundary, and unique protection before accepting a
+permanent test.
+
 See [examples/README.md](examples/README.md) for all five rungs and edge cases.
+
+## Cursor audits and automations
+
+Use the explicit audit skill for a named area:
+
+```text
+/mullet-audit full on packages/billing
+```
+
+Or audit the entire application:
+
+```text
+/mullet-audit ultra across the entire application
+```
+
+The audit is report-only. For whole applications, it maps behavioral
+partitions, runs up to four area auditors concurrently, reviews overlap, and
+challenges any verdict that relies on a high-risk label instead of evidence.
+It reports actionable findings, aggregate verdict counts, and whether the audit
+was complete or sampled.
+
+The core `mullet` skill is the canonical decision policy for Codex, Claude, and
+other skill-only clients. Cursor's bundled agents only add read-only
+orchestration; package validation fails if they stop declaring the core policy
+canonical.
+
+Cursor Automations can run the same invocation on a schedule. See the
+[ready-to-paste recipes](examples/cursor-automations.md) for scoped, baseline,
+and incremental audits.
 
 ## Expected greenfield behavior
 
@@ -189,11 +279,15 @@ runs record whether Mullet was read without being named; decision runs compare
 observed structured verdicts with preregistered expectations.
 
 Benchmark design, thresholds, and limitations are documented in
-[benchmarks/README.md](benchmarks/README.md). The latest package evaluation
-recorded 6/6 sampled decision matches with no high-risk suppression, while the
+[benchmarks/README.md](benchmarks/README.md). The previous package evaluation
+recorded 6/6 sampled decision matches under the v0.1 policy, while the
 automatic-trigger evaluation failed at 7/8 correct completed runs, 20% observed
-false activation, and two timeouts. Read the
-[full evaluation](benchmarks/results/2026-07-25-package-evaluation.md).
+false activation, and two timeouts. Version 0.2 adds explicit fixtures for
+high-risk adjacency, real exposure, consolidation, and existing-test deletion
+sentinels; its deterministic policy check is part of `npm test`. Read the
+[v0.2 diagnostic](benchmarks/results/2026-07-27-cursor-audit-evaluation.md) and
+the historical
+[v0.1 evaluation](benchmarks/results/2026-07-25-package-evaluation.md).
 
 ## License
 

@@ -79,6 +79,29 @@ different failures: one proves the policy rule; the other proves route wiring.
 Preserve both when each detects a distinct consequential failure. Consolidate
 only when boundary and consequence are truly the same.
 
+## High-risk adjacency without durable value
+
+**Change:** An internal helper named `calculatePaymentRisk` belongs to an
+abandoned admin prototype. No route, job, public API, stored state, or supported
+consumer reaches it.
+
+**Verdict:** Exercise it only if needed to verify a related cleanup. Add no
+permanent test.
+
+**Why:** Financial language raises a question; it does not create a production
+task, consequence, contract, exposure, or coverage gap.
+
+## High-risk protection that should consolidate
+
+**Change:** Two authorization integration cases use the same role, endpoint,
+database state, denial response, and private-record consequence. Only their
+fixture names differ.
+
+**Verdict:** Retain the clearest faithful case and consolidate the duplicate.
+
+**Why:** Serious consequence justifies one durable protection, not repeated
+checks of the same failure boundary.
+
 ## How modes differ on an uncertain but concrete risk
 
 **Change:** A planned import validator rejects malformed partner records. The

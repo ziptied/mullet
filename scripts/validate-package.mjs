@@ -1,5 +1,5 @@
 import { readFile, readdir, stat } from "node:fs/promises";
-import { dirname, join, relative, resolve } from "node:path";
+import { basename, dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -39,8 +39,8 @@ function parseDescription(source) {
 
 const files = await walk(root);
 const skillFiles = files.filter((path) => path.endsWith("/SKILL.md"));
-if (skillFiles.length !== 1) {
-  fail(`expected exactly one SKILL.md, found ${skillFiles.length}`);
+if (skillFiles.length !== 2) {
+  fail(`expected exactly two SKILL.md files, found ${skillFiles.length}`);
 }
 
 const skillPath = join(root, "skills/mullet/SKILL.md");
@@ -51,30 +51,135 @@ try {
   fail("skills/mullet/SKILL.md is missing");
 }
 
-if (skill) {
-  const name = skill.match(/^name:\s*(\S+)\s*$/m)?.[1];
-  if (name !== "mullet") fail(`skill name must be mullet, found ${name ?? "none"}`);
-  const description = parseDescription(skill);
-  if (!description) fail("skill description is missing");
+for (const path of skillFiles) {
+  const source = await readFile(path, "utf8");
+  const expectedName = basename(dirname(path));
+  const name = source.match(/^name:\s*(\S+)\s*$/m)?.[1];
+  if (name !== expectedName) {
+    fail(`${relative(root, path)} name must be ${expectedName}, found ${name ?? "none"}`);
+  }
+  const description = parseDescription(source);
+  if (!description) fail(`${relative(root, path)} description is missing`);
   else if (description.length > 1024) {
-    fail(`skill description is ${description.length} characters; maximum is 1024`);
+    fail(
+      `${relative(root, path)} description is ${description.length} characters; `
+      + "maximum is 1024",
+    );
   }
 
-  const lines = skill.trimEnd().split("\n").length;
-  if (lines < 150 || lines > 250) {
-    fail(`runtime skill must remain 150-250 lines; found ${lines}`);
-  }
-
-  for (const match of skill.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
+  for (const match of source.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)) {
     const target = match[1];
     if (/^(https?:|#)/.test(target)) continue;
-    const path = resolve(dirname(skillPath), target);
+    const referencedPath = resolve(dirname(path), target);
     try {
-      if (!(await stat(path)).isFile()) fail(`skill reference is not a file: ${target}`);
+      if (!(await stat(referencedPath)).isFile()) {
+        fail(`${relative(root, path)} reference is not a file: ${target}`);
+      }
     } catch {
-      fail(`skill reference is missing: ${target}`);
+      fail(`${relative(root, path)} reference is missing: ${target}`);
     }
   }
+}
+
+if (skill) {
+  const lines = skill.trimEnd().split("\n").length;
+  if (lines < 150 || lines > 250) {
+    fail(`core runtime skill must remain 150-250 lines; found ${lines}`);
+  }
+  for (const snippet of [
+    "## Existing removal gate",
+    "positive evidence that no unique durable behavior",
+    "comments, issue links, blame, or commits",
+    "Ultra optimizes to the smallest faithful",
+    "whole-file deletion, category-based deletion",
+  ]) {
+    if (!skill.includes(snippet)) fail(`core skill is missing policy: ${snippet}`);
+  }
+}
+
+const corePolicyPhrase = "The core Mullet skill is the canonical decision policy";
+let auditSkill = "";
+try {
+  auditSkill = await readFile(join(root, "skills/mullet-audit/SKILL.md"), "utf8");
+} catch {
+  fail("skills/mullet-audit/SKILL.md is missing");
+}
+if (auditSkill && !auditSkill.includes(corePolicyPhrase)) {
+  fail("mullet-audit must declare the core Mullet skill canonical");
+}
+
+const pluginPath = join(root, ".cursor-plugin/plugin.json");
+const packageManifest = JSON.parse(
+  await readFile(join(root, "package.json"), "utf8"),
+);
+let plugin = null;
+try {
+  plugin = JSON.parse(await readFile(pluginPath, "utf8"));
+} catch {
+  fail(".cursor-plugin/plugin.json is missing or invalid JSON");
+}
+if (plugin) {
+  if (plugin.name !== "mullet") fail("Cursor plugin name must be mullet");
+  if (plugin.version !== packageManifest.version) {
+    fail("Cursor plugin and package versions must match");
+  }
+  if (plugin.homepage !== "https://mulletest.dev") {
+    fail("Cursor plugin homepage must point to https://mulletest.dev");
+  }
+  if (plugin.repository !== "https://github.com/ziptied/mullet") {
+    fail("Cursor plugin repository must point to https://github.com/ziptied/mullet");
+  }
+  if (plugin.logo !== "assets/logo.svg") {
+    fail("Cursor plugin must declare assets/logo.svg as its logo");
+  } else {
+    try {
+      if (!(await stat(join(root, plugin.logo))).isFile()) {
+        fail("Cursor plugin logo is not a file: assets/logo.svg");
+      }
+    } catch {
+      fail("Cursor plugin logo is missing: assets/logo.svg");
+    }
+  }
+  if (plugin.skills !== "./skills/") fail("Cursor plugin must declare ./skills/");
+  if (plugin.agents !== "./agents/") fail("Cursor plugin must declare ./agents/");
+  for (const field of ["skills", "agents"]) {
+    const target = plugin[field];
+    if (typeof target !== "string" || target.includes("..") || target.startsWith("/")) {
+      fail(`Cursor plugin ${field} path must be relative and contained`);
+    }
+  }
+}
+
+const agentFiles = files.filter(
+  (path) => dirname(path) === join(root, "agents") && path.endsWith(".md"),
+);
+if (agentFiles.length !== 4) {
+  fail(`expected four Cursor audit agents, found ${agentFiles.length}`);
+}
+const agentNames = new Set();
+for (const path of agentFiles) {
+  const source = await readFile(path, "utf8");
+  const name = source.match(/^name:\s*(\S+)\s*$/m)?.[1];
+  const description = source.match(/^description:\s*(.+)\s*$/m)?.[1];
+  const model = source.match(/^model:\s*(\S+)\s*$/m)?.[1];
+  const readonly = source.match(/^readonly:\s*(\S+)\s*$/m)?.[1];
+  if (!name) fail(`${relative(root, path)} is missing agent name`);
+  else if (agentNames.has(name)) fail(`duplicate Cursor agent name: ${name}`);
+  else agentNames.add(name);
+  if (!description) fail(`${relative(root, path)} is missing description`);
+  if (model !== "inherit") fail(`${relative(root, path)} model must be inherit`);
+  if (readonly !== "true") fail(`${relative(root, path)} must be read-only`);
+  if (!source.includes(corePolicyPhrase)) {
+    fail(`${relative(root, path)} must declare the core Mullet skill canonical`);
+  }
+}
+for (const expectedName of [
+  "mullet-scope-mapper",
+  "mullet-area-auditor",
+  "mullet-overlap-reviewer",
+  "mullet-verdict-challenger",
+]) {
+  if (!agentNames.has(expectedName)) fail(`missing Cursor agent: ${expectedName}`);
 }
 
 const datasets = [
@@ -102,8 +207,13 @@ const decisions = JSON.parse(
 for (const item of decisions) {
   if (ids.has(item.id)) fail(`duplicate evaluation id: ${item.id}`);
   ids.add(item.id);
-  if (item.highRisk && item.expectedRung === 1) {
-    fail(`high-risk fixture silently loses protection: ${item.id}`);
+  if (
+    item.actualConsequence === "serious"
+    && item.credibleExposure === true
+    && item.uniqueGap
+    && item.expectedRung === 1
+  ) {
+    fail(`demonstrated serious fixture silently loses protection: ${item.id}`);
   }
 }
 
@@ -126,6 +236,10 @@ for (const snippet of [
   "mullet lite",
   "mullet full",
   "mullet ultra",
+  "/mullet-audit",
+  "~/.cursor/plugins/local/mullet",
+  "https://mulletest.dev",
+  "docs/cursor-marketplace-submission.md",
 ]) {
   if (!readme.includes(snippet)) fail(`README is missing: ${snippet}`);
 }
@@ -136,6 +250,9 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Package valid: 1 skill, ${skill.trimEnd().split("\n").length} runtime lines`);
+console.log(
+  `Package valid: 2 skills, 4 read-only Cursor agents, `
+  + `${skill.trimEnd().split("\n").length} core runtime lines`,
+);
 console.log(`Trigger fixtures: 24; decision fixtures: ${decisions.length}`);
 console.log(`Checked ${files.length} package files under ${relative(dirname(root), root)}`);
