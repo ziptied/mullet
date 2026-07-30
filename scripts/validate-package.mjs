@@ -109,6 +109,18 @@ if (auditSkill && !auditSkill.includes(corePolicyPhrase)) {
 }
 
 const pluginPath = join(root, ".cursor-plugin/plugin.json");
+const marketplacePath = join(root, ".cursor-plugin/marketplace.json");
+try {
+  await stat(marketplacePath);
+  fail(
+    ".cursor-plugin/marketplace.json must not exist; "
+    + "single-plugin repos use plugin.json only",
+  );
+} catch (error) {
+  if (error && typeof error === "object" && "code" in error && error.code !== "ENOENT") {
+    fail(".cursor-plugin/marketplace.json could not be checked");
+  }
+}
 const packageManifest = JSON.parse(
   await readFile(join(root, "package.json"), "utf8"),
 );

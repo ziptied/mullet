@@ -58,9 +58,18 @@ recommendations without changing files.
 - `npm pack --dry-run`
 - Local Cursor smoke test against the latest app build.
 
+## Local smoke preflight
+
+Smoke-test by copying the plugin into `~/.cursor/plugins/local/mullet` (see
+README; Cursor rejects out-of-tree symlinks), reload Cursor, then run
+`/mullet-audit`. Do not use Cursor's marketplace or local folder import picker
+against this checkout; that path treats the repo as a marketplace source and is
+the wrong install for a single-plugin package.
+
 ## Submission Notes
 
 This is a single-plugin repository. Per Cursor's plugin template guidance, the
-plugin manifest lives at `.cursor-plugin/plugin.json`; a repository-level
-`.cursor-plugin/marketplace.json` is not required for the public single-plugin
-submission path.
+plugin manifest lives at `.cursor-plugin/plugin.json`. Do not add
+`.cursor-plugin/marketplace.json`; that file is only for multi-plugin catalogs.
+Submit the public GitHub repository at
+[cursor.com/marketplace/publish](https://cursor.com/marketplace/publish).

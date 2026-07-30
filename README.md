@@ -70,20 +70,24 @@ run must use it.
 ### Cursor plugin
 
 Mullet is also a Cursor plugin that bundles both skills and four read-only audit
-subagents. For local development, clone the repository and link it into Cursor's
-local plugin directory:
+subagents. For local testing, copy the plugin into Cursor's local plugin
+directory (Cursor rejects out-of-tree symlinks; do not use the marketplace
+folder picker on this repo):
 
 ```sh
-ln -s /absolute/path/to/mullet ~/.cursor/plugins/local/mullet
+rm -rf ~/.cursor/plugins/local/mullet
+mkdir -p ~/.cursor/plugins/local/mullet
+rsync -a \
+  .cursor-plugin skills agents assets README.md LICENSE package.json \
+  ~/.cursor/plugins/local/mullet/
 ```
 
-Reload Cursor, then invoke `/mullet-audit`. The plugin manifest is ready for a
-Cursor marketplace submission, but this preview is not claiming marketplace
-publication.
+Reload Cursor, then invoke `/mullet-audit`. Re-run the copy after plugin
+changes. The same package is what you submit to the public marketplace.
 
 ### Cursor marketplace
 
-Marketplace listing details are prepared in
+Marketplace listing details and the release checklist are in
 [docs/cursor-marketplace-submission.md](docs/cursor-marketplace-submission.md).
 The public listing uses the same positioning as [mulletest.dev](https://mulletest.dev):
 “Create tests that repay their maintenance.”
@@ -98,9 +102,11 @@ npm run eval:triggers -- --model gpt-5.4 --runs 3
 npm pack --dry-run
 ```
 
-For public Cursor Marketplace submission, this repo is packaged as a single
-plugin with `.cursor-plugin/plugin.json` at the repository root, a committed
-`assets/logo.svg`, and no required repository-level marketplace manifest.
+This is a single-plugin repository: public Cursor Marketplace submission uses
+`.cursor-plugin/plugin.json` at the repository root and a committed
+`assets/logo.svg`. Do not add `.cursor-plugin/marketplace.json` (that file is
+only for multi-plugin catalogs). Push the public GitHub repo, then submit at
+[cursor.com/marketplace/publish](https://cursor.com/marketplace/publish).
 
 ## Three intensities
 
